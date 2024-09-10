@@ -23,16 +23,16 @@
   },
   "homepage": "https://github.com/knyga/node-termal-printer-template#readme",
   "dependencies": {
-    "cheerio": "^1.0.0-rc.3",
+    "cheerio": "^1.0.0",
     "download": "^7.1.0",
-    "jimp": "^0.16.1",
-    "lodash": "^4.17.10",
-    "node-thermal-printer": "^4.0.1",
-    "sanitize-html": ">=2.3.2",
+    "jimp": "^0.16.13",
+    "lodash": "^4.17.21",
+    "node-thermal-printer": "^4.4.3",
+    "sanitize-html": "^2.13.0",
     "temp": "^0.9.4"
   },
   "devDependencies": {
     "mocha": "^9.2.2",
-    "probe-image-size": "^4.1.1"
+    "probe-image-size": "^7.2.3"
   }
 }
