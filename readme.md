@@ -8,7 +8,7 @@ Library is based on the popular [node-thermal-printer](https://github.com/Klemen
 Compare the code in HTML and direct commands for printer.
 
 HTML:
-```HTML
+```HTML 
 <center>
     <p>dsdasdas</p>
     <div style="font-weight: bold">oneone</div>
