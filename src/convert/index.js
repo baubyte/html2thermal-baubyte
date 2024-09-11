@@ -32,6 +32,8 @@ const code128TagHandler = require('./code128TagHandler');
 const qrCodeTagHandler = require('./qrCodeTagHandler');
 const normalTagHandler = require('./normalTagHandler');
 const imgTagHandler = require('./imgTagHandler');
+const textSizeTagHandler = require('./textSizeTagHandler');
+const leftRightTagHandler = require('./leftRightTagHandler');
 
 const handlersCollection = [
   // order matters
@@ -49,6 +51,7 @@ const handlersCollection = [
   code128TagHandler,
   qrCodeTagHandler,
   imgTagHandler,
+  leftRightTagHandler,
 
   fontaTagHandler,
   fontbTagHandler,
@@ -63,6 +66,7 @@ const handlersCollection = [
   doubleHeightTagHandler,
   doubleWidthTagHandler,
   quadAreaTagHandler,
+  textSizeTagHandler,
   normalTagHandler,
 
   divOrPTagsHandler,

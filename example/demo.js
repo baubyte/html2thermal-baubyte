@@ -1,17 +1,20 @@
 const printer = require('node-thermal-printer');
 const execute = require('../src/execute')
-const {convert} = require('../src/convert');
-printer.init({
+const convert = require('../src/convert/index');
+/* printer.init({
   type: 'epson',
   interface: 'tcp://192.168.192.168',
-});
+}); */
 
 const template = `
 <div>hello world</div>
-<p>it is</p>
-<p>me
-me</p>
+<left>this is left</left>
+<right>this is right</right>
+<textsize width="1" height="1"><p>One</p></textsize>
+<p>me me</p>
+<leftRight left="lefttag" right="righttag"/>
 `;
-//console.log(convert(template));
-
-execute(printer, template);
+(async ()=>{
+  console.log(await convert(template));
+})()
+//execute(printer, template);
