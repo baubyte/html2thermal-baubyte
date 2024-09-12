@@ -6,11 +6,11 @@ module.exports = {
       switch(name) {
         case 'width':
           const width = Number.parseInt(value) || 0;
-          if(width >= 1 && width <= 7) {
+          if(width >= 0 && width <= 7) {
             acc.width = width;
           }
-          if(width <=  0) {
-            acc.width = 1;
+          if(width < 0) {
+            acc.width = 0;
           }
           if(width > 7) {
             acc.width = 7;
@@ -18,11 +18,11 @@ module.exports = {
           break;
         case 'height':
           const height =  Number.parseInt(value) || 0;
-          if(height >= 1 && height <= 7) {
+          if(height >= 0 && height <= 7) {
             acc.height = height;
           }
-          if(height <= 0) {
-            acc.height = 1;
+          if(height < 0) {
+            acc.height = 0;
           }
           if(height > 7) {
             acc.height = 7;
@@ -32,7 +32,7 @@ module.exports = {
       return acc;
     }, {});
     context.textStyles = context.textStyles ? [...context.textStyles, 'TextSize'] : ['TextSize'];
-    context.commands.push({name: 'setTextSize', data: [formattedAttrs.height, formattedAttrs.width], isArrayData: true});
+    context.commands.push({name: 'setTextSize', data: [Number.parseInt(formattedAttrs.height), Number.parseInt(formattedAttrs.width)], isArrayData: true});
     return context;
   },
   after: (context) => {

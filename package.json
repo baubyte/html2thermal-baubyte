@@ -28,6 +28,7 @@
     "jimp": "^0.16.13",
     "lodash": "^4.17.21",
     "node-thermal-printer": "^4.4.3",
+    "normalize-url": "^8.0.1",
     "sanitize-html": "^2.13.0",
     "temp": "^0.9.4"
   },

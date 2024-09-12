@@ -18,7 +18,7 @@ const printer = new ThermalPrinter(options);
 const template = `
 <leftright left="lefttag" right="righttag"></leftright>
 <qrcode data="xxxyyy"></qrcode>
-<textsize width="7" height="6">Size</textsize>
+<textsize width="-1" height="6">Size</textsize>
 <div><left>this is left</left> <right>this is right</right></div>
 <p>me me</p>
 <hr/>
