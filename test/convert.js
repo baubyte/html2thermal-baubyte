@@ -934,6 +934,167 @@ me</p>
       });
     });
   });
+  describe('textsize tag', async () => {
+    it('handles textsize with width and height', async () => {
+      const template = `
+      <textsize width="2" height="3">
+        <p>dsdasdas</p>
+        <div>oneone</div>
+      </textsize>
+      <p>123</p>
+      <p>456</p>
+  `;
+  
+      const expectedResult = [
+        { name: 'setTextSize', data: [3, 2], isArrayData: true },
+        { name: 'print', data: 'dsdasdas' },
+        { name: 'newLine' },
+        { name: 'print', data: 'oneone' },
+        { name: 'newLine' },
+        { name: 'setTextNormal' },
+        { name: 'print', data: '123' },
+        { name: 'newLine' },
+        { name: 'print', data: '456' },
+        { name: 'newLine' },
+      ];
+  
+      assert.deepStrictEqual(await convert(template), expectedResult);
+    });
+  
+    it('handles textsize with only width', async () => {
+      const template = `
+      <textsize width="4">
+        <p>dsdasdas</p>
+      </textsize>
+      <p>123</p>
+  `;
+  
+      const expectedResult = [
+        { name: 'setTextSize', data: [0, 4], isArrayData: true },  // height default to 0
+        { name: 'print', data: 'dsdasdas' },
+        { name: 'newLine' },
+        { name: 'setTextNormal' },
+        { name: 'print', data: '123' },
+        { name: 'newLine' },
+      ];
+  
+      assert.deepStrictEqual(await convert(template), expectedResult);
+    });
+  
+    it('handles textsize with only height', async () => {
+      const template = `
+      <textsize height="5">
+        <p>dsdasdas</p>
+      </textsize>
+      <p>123</p>
+  `;
+  
+      const expectedResult = [
+        { name: 'setTextSize', data: [5, 0], isArrayData: true },  // width default to 0
+        { name: 'print', data: 'dsdasdas' },
+        { name: 'newLine' },
+        { name: 'setTextNormal' },
+        { name: 'print', data: '123' },
+        { name: 'newLine' },
+      ];
+  
+      assert.deepStrictEqual(await convert(template), expectedResult);
+    });
+  
+    it('handles textsize with out of range values', async () => {
+      const template = `
+      <textsize width="10" height="-3">
+        <p>dsdasdas</p>
+      </textsize>
+      <p>123</p>
+  `;
+  
+      const expectedResult = [
+        { name: 'setTextSize', data: [0, 7], isArrayData: true },  // height default to 0, width capped to 7
+        { name: 'print', data: 'dsdasdas' },
+        { name: 'newLine' },
+        { name: 'setTextNormal' },
+        { name: 'print', data: '123' },
+        { name: 'newLine' },
+      ];
+  
+      assert.deepStrictEqual(await convert(template), expectedResult);
+    });
+  });
+
+  describe('leftright tag', async () => {
+    it('handles leftright with both left and right attributes', async () => {
+      const template = `
+      <p><leftright left="Sample" right="text"/></p>
+      <p>More text</p>
+      `;
+      const expectedResult = [
+        { name: 'leftRight', data: ['Sample', 'text'], isArrayData: true },
+        { name: 'newLine' },
+        { name: 'print', data: 'More text' },
+        { name: 'newLine' },
+      ];
+      // console.log(await convert(template));
+      // process.exit(-1);
+      assert.deepStrictEqual(await convert(template), expectedResult);
+    });
+
+    it('handles leftright with only left attribute', async () => {
+      const template = `
+      <p>Sample text</p>
+      <leftright left="Sample"></leftright>
+      <leftright left="Sample 1"/>
+      <p>More text</p>
+      `;
+  
+      const expectedResult = [
+        { name: 'print', data: 'Sample text' },
+        { name: 'newLine' },
+        { name: 'leftRight', data: ['Sample', ''], isArrayData: true }, 
+        { name: 'print', data: 'More text' },
+        { name: 'newLine' },
+        { name: 'leftRight', data: ['Sample 1', ''], isArrayData: true }, 
+      ];
+      //console.log(await convert(template));
+      //process.exit(-1);
+      assert.deepStrictEqual(await convert(template), expectedResult);
+    });
+    it('handles leftright with only right attribute', async () => {
+      const template = `
+      <p>Sample text</p>
+      <leftright right="Sample"></leftright>
+      <p>More text</p>
+      `;
+  
+      const expectedResult = [
+        { name: 'print', data: 'Sample text' },
+        { name: 'newLine' },
+        { name: 'leftRight', data: ['', 'Sample'], isArrayData: true },
+        { name: 'print', data: 'More text' },
+        { name: 'newLine' },
+      ];
+  
+      assert.deepStrictEqual(await convert(template), expectedResult);
+    });
+  
+    it('handles missing left and right attributes', async () => {
+      const template = `
+      <p>Sample text</p>
+      <leftright></leftright>
+      <p>More text</p>
+      `;
+  
+      const expectedResult = [
+        { name: 'print', data: 'Sample text' },
+        { name: 'newLine' },
+        { name: 'leftRight', data: ['', ''], isArrayData: true }, // Defaults to empty strings
+        { name: 'print', data: 'More text' },
+        { name: 'newLine' },
+      ];
+  
+      assert.deepStrictEqual(await convert(template), expectedResult);
+    });
+  });
 
   // TODO getWidth?? testWidth - что нет переносов
   // TODO pdf417

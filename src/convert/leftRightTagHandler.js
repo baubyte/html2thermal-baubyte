@@ -8,14 +8,14 @@ module.exports = {
       const value = attrs[name];
       switch(name) {
         case 'left':
-            acc.left = _.isString(value) ? value : '';
+            acc.left = (_.isString(value)) ? value : '';
           break;
         case 'right':
             acc.right = _.isString(value) ? value : '';
           break;
       }
       return acc;
-    }, {});
+    }, {left: '', right: ''});
     context.commands.push({name: 'leftRight', data: [formattedAttrs.left, formattedAttrs.right], isArrayData: true});
     return context;
   },

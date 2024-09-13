@@ -2,35 +2,25 @@ module.exports = {
   checkIsAllowed: (context, {tag}) => tag === 'textsize',
   before: (context, {attrs}) => {
     const formattedAttrs = Object.keys(attrs).reduce((acc, name) => {
-      const value = attrs[name];
+      const value = Number.parseInt(attrs[name], 10);
       switch(name) {
         case 'width':
-          const width = Number.parseInt(value) || 0;
-          if(width >= 0 && width <= 7) {
-            acc.width = width;
-          }
-          if(width < 0) {
+          if (Number.isNaN(value)) {
             acc.width = 0;
-          }
-          if(width > 7) {
-            acc.width = 7;
+          } else {
+            acc.width = Math.max(0, Math.min(value, 7));
           }
           break;
         case 'height':
-          const height =  Number.parseInt(value) || 0;
-          if(height >= 0 && height <= 7) {
-            acc.height = height;
-          }
-          if(height < 0) {
+          if (Number.isNaN(value)) {
             acc.height = 0;
-          }
-          if(height > 7) {
-            acc.height = 7;
+          } else {
+            acc.height = Math.max(0, Math.min(value, 7));
           }
           break;
       }
       return acc;
-    }, {});
+    }, { width: 0, height: 0 });
     context.textStyles = context.textStyles ? [...context.textStyles, 'TextSize'] : ['TextSize'];
     context.commands.push({name: 'setTextSize', data: [Number.parseInt(formattedAttrs.height), Number.parseInt(formattedAttrs.width)], isArrayData: true});
     return context;
