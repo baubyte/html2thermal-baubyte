@@ -1,6 +1,6 @@
 const fs = require('fs');
 const temp = require('temp');
-const download = require('download');
+const axios = require('axios'); 
 const jimp = require('jimp');
 
 // TODO add cache for input path - output path
@@ -33,7 +33,12 @@ const getImage = (attrs) => new Promise((resolve, reject) => {
         let data = null;
 
         try {
-          data = await download(src);
+          const response = await axios({
+            url: src,
+            method: 'GET',
+            responseType: 'arraybuffer' // Necesitamos el archivo como un buffer de bytes
+          });
+          data = await response.data;
         } catch (e) {
           reject();
         }
