@@ -56,31 +56,40 @@ const operador = {
 let template = `
 <center>
   <p>*** TK PRUEBA NO VÁLIDO ***</p>
+  <br/>
 </center>
 <doublewidth>
   <textsize width="2" height="2"/>
   <p>suticket.com</p>
+  <br/>
 </doublewidth>
-<p><leftRight left="PV ${operador.username}" right="Nro. Operación ${operacion.id_operaciones}"/></p>
-<p><leftRight left="Fecha ${ticket.fecha}" right="Hora: ${operacion.hora}"/></p>
+<div>
+  <p>PV ${_.padEnd(operador.username, 14)}      Nro. Operación ${_.padStart(operacion.id_operaciones, 6, '0')}</p>
+  <p>Fecha ${ticket.fecha}              Hora: ${operacion.hora}</p>
+</div>
+<br/>
 `;
 if (operacion.metodo_pago === 'cortesia' || !operacion.metodo_pago) {
   if (operacion.cortesia_descri) {
     const cortesiaDescriChunks = _.chunk(operacion.cortesia_descri, 40).map(chunk => chunk.join('')).join('\n');
     template += `<p>${cortesiaDescriChunks}</p>`
   }
-  template += `<center><p>*** CORTESIA ***</p></center>`;
+  template += `<center><p>*** CORTESIA ***</p><br/></center>`;
 }else {
   template += `<p>${usuario.nombre}${usuario.apellido ? ' ' + usuario.apellido : ''} ${usuario.tipodoc} ${usuario.dni}</p>
-  <p><leftRight left="TOTAL" right="${operacion.moneda} ${operacion.precio_regular.toFixed(2)}"/></p>`;
+  <br/>
+  <p><leftRight left="TOTAL" right="${operacion.moneda} ${operacion.precio_regular.toFixed(2)}"/></p>
+  <br/>`;
 }
 
 template += `
 <center>
   <doublewidth>
     <p>${evento.descri}</p>
+    <br/>
   </doublewidth>
   <p><b>Función del ${funcion.fecha} a las ${funcion.horario} horas</b></p>
+  <br/>
   <doublewidth>
     <p>${ticket.sector}</p>
   </doublewidth>
@@ -92,7 +101,7 @@ if (ticket.label && ticket.label.trim() !== '') {
 } else if (ticket.fila === 0 && ticket.asiento === 0) {
   template += `<center><textsize width="1" height="1"/><p>SIN NUMERAR</p></center>`
 } else {
-  template += `<center><p>FILA              ASIENTO</p> <p>${ticket.fila}    ${ticket.columna === '' ? ticket.asiento : ticket.columna}</p></center><br/>`
+  template += `<center><textsize width="1" height="1"/><p>   FILA     ASIENTO</p><br/><p>${ticket.fila}    ${ticket.columna === '' ? ticket.asiento : ticket.columna}</p></center><br/>`
 }
 template += `
 <center>
@@ -107,7 +116,9 @@ if (evento.importante_ticket && evento.importante_ticket.trim() !== '') {
 template += `
 <center>
   <p>No se admiten cambios ni devoluciones</p>
+  <br/>
   <p>${operador.username} ${new Date().toLocaleString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })} # ${(operacion.emision_count + 1)}</p>
+  <br/>
   <p>*** TK PRUEBA NO VÁLIDO ***</p>
 </center>`;
 convert(template).then((result) => {
