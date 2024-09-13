@@ -60,6 +60,7 @@ Library exports 2 functions:
 * `<center>...</center>` aligns text to center
 * `<left>...</left>` aligns text to left
 * `<right>...</right>` aligns text to right
+* `<leftRight left="..." right="..."/>` print text in one line align left and align right
 * `<cut />` cuts the paper if printer supports it
 * `<partialcut />` cuts the paper and leaves the bridge in the middle if printer supports it
 * `<div>...</div>` isolates content on the separate line
@@ -70,6 +71,7 @@ Library exports 2 functions:
 * `<doublewidth>...</doublewidth>` sets text to double width
 * `<fonta>...</fonta>` changes text font to the first supported (A or default)
 * `<fontb>...</fontb>` changes text font to the second supported (B)
+* `<textsize width="..." height="...."/>` changes text size
 * `<hr />` draws the line-separator
 * `<img src="..." height="..." width="..." />` prints the image from src (`file:`, `http:`, `https:`, `data:`, ...), width and height in pixels are optional
 * `<invert>...</invert>` inverts background and foreground colors
@@ -127,14 +129,21 @@ If no tag provided, then `print` operation will be executed.
 ## Example
 
 ```JS
-const printer = require('node-thermal-printer')
-const {execute} = require('html2thermal')
-printer.init({
-  type: 'epson',
-  // If you connect over TCP
-  interface: 'tcp://192.168.192.168',
-})
-
+const { ThermalPrinter, PrinterTypes, CharacterSet, BreakLine } = require('node-thermal-printer');
+const execute = require('../src/execute')
+const convert = require('../src/convert/index');
+const options = {
+  type: PrinterTypes.EPSON,
+  interface: '//computerName/printerName', //or your interface
+  characterSet: CharacterSet.PC852_LATIN2,
+  removeSpecialCharacters: false,
+  lineCharacter: " ",
+  breakLine: BreakLine.WORD,
+  options:{
+    timeout: 6000
+  },
+}
+const printer = new ThermalPrinter(options);
 const template = `
 <div>hello world</div>
 <p>it is</p>
