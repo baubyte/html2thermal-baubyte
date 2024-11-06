@@ -1,7 +1,7 @@
 const fs = require('fs');
 const temp = require('temp');
 const axios = require('axios'); 
-const jimp = require('jimp');
+const { Jimp } = require("jimp");
 
 // TODO add cache for input path - output path
 
@@ -88,31 +88,24 @@ module.exports = {
             size.height = attrs.height;
           }
         }
-
         temp.open('printerimg', async(err, info) => {
           if (err) {
-            reject();
+            resolve(context);
           } else {
             const path = `${info.path}.png`;
-            jimp.read(imagePath, (err, lenna) => {
-              if(err) {
-                resolve(context);
-              } else {
-                let chain = lenna;
-                if (size !== null) {
-                  chain = chain.resize.apply(chain,
-                    [size.width ? +size.width : jimp.AUTO,
-                      size.height ? +size.height : jimp.AUTO]);
-                }
-                chain.write(path, (err) => {
-                  if(!err) {
-                    context.commands.push({name: 'printImage', data: path, isAwait: true});
-                  }
-
-                  resolve(context);
-                })
+            try {
+              const image = await Jimp.read(imagePath);
+              if (size) {
+                const width = size?.width ? parseInt(size.width, 10) || Jimp.AUTO : Jimp.AUTO;
+                const height = size?.height ? parseInt(size.height, 10) || Jimp.AUTO : Jimp.AUTO;
+                image.resize({w:width, h:height});
               }
-            });
+              await image.write(path);
+              context.commands.push({ name: 'printImage', data: path, isAwait: true });
+            } catch (e) {
+              console.error("Error al procesar la imagen:", e);
+            }
+            resolve(context);
           }
         });
       } catch (e) {
